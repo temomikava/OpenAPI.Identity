@@ -12,13 +12,15 @@ namespace OpenAPI.Identity.Controllers
     public class CompaniesController : ControllerBase
     {
         private readonly ICompanyRepository _companyRepository;
+        private readonly IIntegrationEventService _integrationEventService;
 
-        public CompaniesController(ICompanyRepository companyRepository)
+        public CompaniesController(ICompanyRepository companyRepository, IIntegrationEventService integrationEventService)
         {
             _companyRepository = companyRepository;
+            _integrationEventService = integrationEventService;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateCompany(string name)
+        public async Task<IActionResult> CreateCompany(string name, CancellationToken token)
         {
             var apiKey = KeyGenerator.GenerateApiKey();
             var apiSecret = KeyGenerator.GenerateApiSecret();
@@ -29,6 +31,8 @@ namespace OpenAPI.Identity.Controllers
                 APISecret = apiSecret
             };
             var createdCompany = await _companyRepository.CreateAsync(company);
+            await _integrationEventService.AddEventAsync(new CompanyRegisteredIntegrationEvent(name, apiKey, apiSecret));
+            await _integrationEventService.PublishEventsAsync(Guid.NewGuid(), token);
             return Ok(createdCompany);
         }
         [HttpGet("{id}")]

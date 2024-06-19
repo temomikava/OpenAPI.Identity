@@ -1,3 +1,4 @@
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -23,6 +24,20 @@ builder.Services.AddAuthentication(options =>
 }).AddJwtBearer();
 
 builder.Services.AddScoped<ApiKeyAuthAttribute>();
+builder.Services.AddScoped<IIntegrationEventService, IntegrationEventService>();
+
+
+builder.Services.AddMassTransit(configuration =>
+{
+    configuration.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("rabbitmq", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");           
+        });
+    });
+});
 
 var app = builder.Build();
 
@@ -39,8 +54,10 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
 await using (var scope = app.Services.CreateAsyncScope())
 {
     await scope.ServiceProvider.GetRequiredService<ApplicationDbContext>().Database.MigrateAsync();
 }
+
 app.Run();
