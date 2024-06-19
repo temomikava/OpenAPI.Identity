@@ -20,7 +20,6 @@ namespace OpenAPI.Identity
                 return;
             }
 
-            // Get the database context service
             var dbContext = context.HttpContext.RequestServices.GetService<ApplicationDbContext>();
             if (dbContext == null)
             {
@@ -28,7 +27,6 @@ namespace OpenAPI.Identity
                 return;
             }
 
-            // Ensure a database query is thread-safe
             var company = dbContext.Companies.FirstOrDefault(c => c.APIKey == apiKey.ToString() && c.APISecret == apiSecret.ToString());
 
             if (company == null)
