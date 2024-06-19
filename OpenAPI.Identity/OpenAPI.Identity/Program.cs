@@ -1,7 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using OpenAPI.Identity.Data;
-using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
