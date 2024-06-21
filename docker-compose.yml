@@ -1,0 +1,39 @@
+﻿services:
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=OpenApi.Identity;Username=tmikava;Password=Npottwyctd12
+    depends_on:
+      - db
+      - rabbitmq
+
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: OpenApi.Identity
+      POSTGRES_USER: tmikava
+      POSTGRES_PASSWORD: Npottwyctd12
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"   # AMQP port
+      - "15672:15672" # RabbitMQ management UI port
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  pgdata:
+
+
+

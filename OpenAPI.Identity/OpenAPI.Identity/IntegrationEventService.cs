@@ -5,12 +5,14 @@ namespace OpenAPI.Identity
 {
     public class IntegrationEventService : IIntegrationEventService
     {
-        private readonly IBus eventBus;
+        private readonly IPublishEndpoint _publishEndpoint;
         private readonly List<IIntegrationEvent> events = new List<IIntegrationEvent>();
+        private readonly ILogger<IntegrationEventService> logger;
 
-        public IntegrationEventService(IBus eventBus)
+        public IntegrationEventService(IPublishEndpoint publishEndpoint, ILogger<IntegrationEventService> logger)
         {
-            this.eventBus = eventBus;
+            _publishEndpoint = publishEndpoint;
+            this.logger = logger;
         }
         public Task AddEventAsync(BaseIntegrationEvent @event)
         {
@@ -20,9 +22,10 @@ namespace OpenAPI.Identity
 
         public async Task PublishEventsAsync(Guid correlationId, CancellationToken token)
         {
+            logger.LogInformation("sending message");
             foreach (var @event in events)
             {
-                await eventBus.Publish(@event, @event.GetType(), c =>
+                await _publishEndpoint.Publish(@event, @event.GetType(), c =>
                 {
                     c.CorrelationId = correlationId;
                 }, token);
