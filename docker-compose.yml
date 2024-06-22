@@ -8,6 +8,10 @@
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=OpenApi.Identity;Username=tmikava;Password=Npottwyctd12
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=tmikava
+      - RABBITMQ_PASSWORD=Npottwyctd12
     depends_on:
       - db
       - rabbitmq
@@ -29,8 +33,8 @@
       - "5672:5672"   # AMQP port
       - "15672:15672" # RabbitMQ management UI port
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: tmikava
+      RABBITMQ_DEFAULT_PASS: Npottwyctd12
 
 volumes:
   pgdata:
