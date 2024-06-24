@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Contracts\IntegrationEvents.csproj" />
+    <Folder Include="IntegrationEventHandlers\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="IntegrationEventHandlers\" />
+    <ProjectReference Include="..\IntegrationEvents\IntegrationEvents.csproj" />
   </ItemGroup>
 
 </Project>

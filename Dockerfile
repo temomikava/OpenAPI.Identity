@@ -9,8 +9,8 @@ WORKDIR /src
 
 # Copy the .csproj file and restore dependencies
 COPY ["OpenAPI.Identity/OpenAPI.Identity/OpenAPI.Identity.csproj", "OpenAPI.Identity/OpenAPI.Identity/"]
-COPY ["OpenAPI.Identity/Contracts/IntegrationEvents.csproj", "Contracts/"]
-COPY ["OpenAPI.Identity/SharedKernel/SharedKernel.csproj", "SharedKernel/"]
+COPY ["OpenAPI.Identity/IntegrationEvents/IntegrationEvents.csproj", "OpenAPI.Identity/IntegrationEvents/"]
+COPY ["OpenAPI.Identity/SharedKernel/SharedKernel.csproj", "OpenAPI.Identity/SharedKernel/"]
 RUN dotnet restore "OpenAPI.Identity/OpenAPI.Identity/OpenAPI.Identity.csproj"
 
 # Copy the entire project and build it

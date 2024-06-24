@@ -30,8 +30,8 @@
     image: rabbitmq:latest
     container_name: rabbitmq
     ports:
-      - "5672:5672"   # AMQP port
-      - "15672:15672" # RabbitMQ management UI port
+      - "5672:5672"
+      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: tmikava
       RABBITMQ_DEFAULT_PASS: Npottwyctd12
@@ -43,7 +43,8 @@ volumes:
 
 networks:
   app-network:
-    driver: bridge
+    external: true
+
 
 
 
