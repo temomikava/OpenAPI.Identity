@@ -1,5 +1,6 @@
 ﻿
 using MassTransit;
+using SharedKernel;
 
 namespace OpenAPI.Identity
 {

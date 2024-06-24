@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.DataProtection;
+﻿using IntegrationEvents;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
 using OpenAPI.Identity.Data;
+using SharedKernel;
 using System.ComponentModel.DataAnnotations;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,10 +13,10 @@ namespace OpenAPI.Identity.Controllers
     [ApiController]
     public class CompaniesController : ControllerBase
     {
-        private readonly ICompanyRepository _companyRepository;
+        private readonly IRepository<Company,int> _companyRepository;
         private readonly IIntegrationEventService _integrationEventService;
 
-        public CompaniesController(ICompanyRepository companyRepository, IIntegrationEventService integrationEventService)
+        public CompaniesController(IRepository<Company,int> companyRepository, IIntegrationEventService integrationEventService)
         {
             _companyRepository = companyRepository;
             _integrationEventService = integrationEventService;

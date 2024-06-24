@@ -8,13 +8,11 @@
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=db;Port=5432;Database=OpenApi.Identity;Username=tmikava;Password=Npottwyctd12
-      - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USER=tmikava
-      - RABBITMQ_PASSWORD=Npottwyctd12
     depends_on:
       - db
       - rabbitmq
+    networks:
+      - app-network
 
   db:
     image: postgres:latest
@@ -25,6 +23,8 @@
       POSTGRES_PASSWORD: Npottwyctd12
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - app-network
 
   rabbitmq:
     image: rabbitmq:latest
@@ -35,9 +35,15 @@
     environment:
       RABBITMQ_DEFAULT_USER: tmikava
       RABBITMQ_DEFAULT_PASS: Npottwyctd12
+    networks:
+      - app-network
 
 volumes:
   pgdata:
+
+networks:
+  app-network:
+    driver: bridge
 
 
 

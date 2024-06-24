@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using OpenAPI.Identity;
 using OpenAPI.Identity.Data;
+using SharedKernel;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +17,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -25,6 +25,7 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<ApiKeyAuthAttribute>();
 builder.Services.AddScoped<IIntegrationEventService, IntegrationEventService>();
+builder.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
 
 
 builder.Services.AddMassTransit(configuration =>
@@ -36,6 +37,7 @@ builder.Services.AddMassTransit(configuration =>
             h.Username("tmikava");
             h.Password("Npottwyctd12");           
         });
+        cfg.ConfigureEndpoints(context);
     });
 });
 

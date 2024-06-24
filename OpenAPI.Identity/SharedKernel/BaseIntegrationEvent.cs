@@ -1,4 +1,4 @@
-﻿namespace OpenAPI.Identity
+﻿namespace SharedKernel
 {
     public class BaseIntegrationEvent : IIntegrationEvent
     {
